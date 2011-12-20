@@ -32,8 +32,8 @@ public class Player{
 	 */
 
 	private MP3Player player = new MP3Player();
-	private DefaultListModel model = new DefaultListModel();
-	private JList list = new JList(model);
+	private DefaultListModel<String> model = new DefaultListModel<String>();
+	private JList<String> list = new JList<String>(model);
 	public JFrame frame;
 	private ImageIcon i = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
 	

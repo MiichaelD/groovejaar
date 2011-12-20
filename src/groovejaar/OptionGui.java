@@ -50,7 +50,7 @@ public class OptionGui extends JDialog {
 	private Option opt = new Option();
 	private ImageIcon i = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
 	private JTextField txtTemplate;
-	private JComboBox comboBox;
+	private JComboBox<String> comboBox;
 	private JCheckBox chkBitrateSize;
 	
 	
@@ -116,8 +116,8 @@ public class OptionGui extends JDialog {
 		
 		JLabel lblIfFileExits = new JLabel("If file exits");
 		
-		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Ask Action", "Overwrite", "Skip"}));
+		comboBox = new JComboBox<String>();
+		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Ask Action", "Overwrite", "Skip"}));
 		
 		chkBitrateSize = new JCheckBox("Auto get bitrate and size",opt.autoBitrateSize());
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);

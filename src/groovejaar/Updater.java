@@ -21,7 +21,7 @@ public class Updater implements Callable<Boolean>{
 	@Override
 	public Boolean call() {
 		try {
-			updateURL = new URL("http://groovejaar.googlecode.com/svn/trunk/src/version.properties");
+			updateURL = new URL("");
 		} catch (MalformedURLException e) {
 			
 			e.printStackTrace();
