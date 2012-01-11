@@ -99,7 +99,7 @@ public class OptionGui extends JDialog {
 		txtTemplate = new JTextField(opt.getFileTemplate());
 		txtTemplate.setColumns(10);
 		
-		JLabel lblFileNameTemplate = new JLabel("File name template (Reserved words: %TrackNum %Title% %Artist% %Album%)");
+		JLabel lblFileNameTemplate = new JLabel("File name template (Reserved words: %Track%, %Title%, %Artist%, %Album%)");
 		
 		JButton btnTestTemplate = new JButton("Test Template");
 		btnTestTemplate.addActionListener(new ActionListener() {
@@ -110,7 +110,7 @@ public class OptionGui extends JDialog {
 				mp3.put("ArtistName", "Beethoven");
 				mp3.put("AlbumName", "Classical Best Of");
 				mp3.put("Year", "1800");
-				GrooveJaar.showMessage("You're downloads will saved as: "+GrooveJaar.makeTitle(mp3,txtTemplate.getText()));
+				GrooveJaar.showMessage("Your downloads will saved as: "+GrooveJaar.makeTitle(mp3,txtTemplate.getText()));
 			}
 		});
 		
