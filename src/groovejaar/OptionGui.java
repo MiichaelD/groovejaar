@@ -9,13 +9,13 @@ package groovejaar;
  ******************************************************************************/
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Toolkit;
+
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.ImageIcon;
+
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.GroupLayout;
@@ -48,7 +48,7 @@ public class OptionGui extends JDialog {
 	private JLabel lblDownloadDirectory;
 	private JTextField txtDownload;
 	private Option opt = new Option();
-	private ImageIcon i = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
+	//private ImageIcon i = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
 	private JTextField txtTemplate;
 	private JComboBox<String> comboBox;
 	private JCheckBox chkBitrateSize;
@@ -60,7 +60,7 @@ public class OptionGui extends JDialog {
 	 */
 	public OptionGui() throws IOException {
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		this.setIconImage(i.getImage());
+		this.setIconImage(new ImageUtil().getLogo());
 		//this.setLocationRelativeTo(null);
 		setTitle(("Settings"));
 		setBounds(100, 100, 506, 391);

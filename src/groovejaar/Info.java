@@ -10,13 +10,13 @@ import java.awt.BorderLayout;
 
 
 
-import java.awt.Toolkit;
+
 
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.ImageIcon;
+
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -41,7 +41,7 @@ public class Info extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private ImageIcon i = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
+	
 
 	/**
 	 * Create the dialog.
@@ -50,15 +50,15 @@ public class Info extends JDialog {
 	public Info() {
 		setTitle("Info");
 		//this.setLocationRelativeTo(null);
-		this.setIconImage(i.getImage());
+		this.setIconImage(new ImageUtil().getLogo());
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
 		setBounds(100, 100, 575, 409);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		
-		JLabel lblImage = new JLabel(i);
+		//FIXME
+		JLabel lblImage = new JLabel(new ImageUtil().getImgIcon("logo.png"));
 		
 		JLabel lblVersion = new JLabel(("Version: ")+GrooveJaar.version);
 		lblVersion.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));

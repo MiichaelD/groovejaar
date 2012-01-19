@@ -7,11 +7,7 @@ package groovejaar;
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  ******************************************************************************/
 
-import java.awt.Toolkit;
 
-
-
-import javax.swing.ImageIcon;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -40,7 +36,7 @@ public class Login extends JFrame {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
 	private JPasswordField passwordField;
-	private ImageIcon i = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
+	
 	private JCheckBox chckbxLogin;
 	
 
@@ -50,7 +46,7 @@ public class Login extends JFrame {
 	public Login() {
 		
 		//setTitle("Login");
-		this.setIconImage(i.getImage());
+		this.setIconImage(new ImageUtil().getLogo());
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 278, 218);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

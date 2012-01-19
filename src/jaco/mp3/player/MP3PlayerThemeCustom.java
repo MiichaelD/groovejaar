@@ -1,11 +1,13 @@
 package jaco.mp3.player;
 
-import java.awt.Toolkit;
+import groovejaar.ImageUtil;
+
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-import javax.swing.ImageIcon;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JSlider;
@@ -15,13 +17,14 @@ import javax.swing.event.ChangeListener;
 
 public class MP3PlayerThemeCustom  implements MP3PlayerTheme {
 
+	private ImageUtil image = new ImageUtil();
 	/**
 	 * @wbp.parser.entryPoint
 	 */
 	@Override
 	public void apply(final MP3Player player) {
 	    final JButton playButton = new JButton();
-	    playButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("play.png"))));
+	    playButton.setIcon(image.getImgIcon("play.png"));
 	    playButton.setToolTipText("Play");
 	    playButton.addActionListener(new ActionListener() {
 	      public void actionPerformed(ActionEvent e) {
@@ -30,7 +33,7 @@ public class MP3PlayerThemeCustom  implements MP3PlayerTheme {
 	    });
 
 	    final JButton pauseButton = new JButton();
-	    pauseButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("pause.png"))));
+	    pauseButton.setIcon(image.getImgIcon("pause.png"));
 	    pauseButton.setToolTipText("Pause");
 	    pauseButton.addActionListener(new ActionListener() {
 	      public void actionPerformed(ActionEvent e) {
@@ -39,7 +42,7 @@ public class MP3PlayerThemeCustom  implements MP3PlayerTheme {
 	    });
 
 	    final JButton stopButton = new JButton();
-	    stopButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("stop.png"))));
+	    stopButton.setIcon(image.getImgIcon("stop.png"));
 	    stopButton.setToolTipText("Stop");
 	    stopButton.addActionListener(new ActionListener() {
 	      public void actionPerformed(ActionEvent e) {
@@ -48,7 +51,7 @@ public class MP3PlayerThemeCustom  implements MP3PlayerTheme {
 	    });
 
 	    final JButton skipBackwardButton = new JButton();
-	    skipBackwardButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("backward.png"))));
+	    skipBackwardButton.setIcon(image.getImgIcon("backward.png"));
 	    skipBackwardButton.setToolTipText("Skip Backward");
 	    skipBackwardButton.addActionListener(new ActionListener() {
 	      public void actionPerformed(ActionEvent e) {
@@ -57,7 +60,7 @@ public class MP3PlayerThemeCustom  implements MP3PlayerTheme {
 	    });
 
 	    final JButton skipForwardButton = new JButton();
-	    skipForwardButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("forward.png"))));
+	    skipForwardButton.setIcon(image.getImgIcon("forward.png"));
 	    skipForwardButton.setToolTipText("Skip Forward");
 	    skipForwardButton.addActionListener(new ActionListener() {
 	      public void actionPerformed(ActionEvent e) {

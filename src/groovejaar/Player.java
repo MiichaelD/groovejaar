@@ -2,13 +2,13 @@ package groovejaar;
 import jaco.mp3.player.MP3Player;
 
 import java.awt.Color;
-import java.awt.Toolkit;
+
 
 
 
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
+
 import javax.swing.JFrame;
 import javax.swing.JList;
 
@@ -35,13 +35,13 @@ public class Player{
 	private DefaultListModel<String> model = new DefaultListModel<String>();
 	private JList<String> list = new JList<String>(model);
 	public JFrame frame;
-	private ImageIcon i = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
+	
 	
 	public Player(){
 
 
 		frame = new JFrame("GrooveJaar Player");
-		frame.setIconImage(i.getImage());
+		frame.setIconImage((new ImageUtil().getLogo()));
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		JScrollPane scrollPane = new JScrollPane();

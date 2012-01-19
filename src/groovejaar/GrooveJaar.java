@@ -7,53 +7,20 @@ package groovejaar;
  * http://www.gnu.org/licenses/gpl.html
  ******************************************************************************/
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.Point;
-
-
-
-
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Point;
 import java.awt.Toolkit;
-
-
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-
-
-
-import javax.swing.JPopupMenu;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-
-import javax.swing.SwingUtilities;
-
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-
-
-import javax.swing.table.TableColumnModel;
-
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -65,32 +32,54 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-
-import java.util.HashMap;
-
-
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-
-import javax.swing.JTabbedPane;
+import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.TitledBorder;
-import java.awt.Font;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import javax.swing.table.DefaultTableModel;
+
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import jgroove.JGroovex;
-
 import jgroove.jsonx.JsonGetSong.Result;
-
 import jgroove.jsonx.JsonUser;
-
 
 import net.miginfocom.swing.MigLayout;
 
@@ -100,21 +89,8 @@ import org.jaudiotagger.audio.AudioHeader;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-
 import org.jaudiotagger.tag.TagException;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.Color;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JMenuItem;
-import javax.swing.JMenu;
-import javax.swing.JSeparator;
-import java.awt.Component;
-
-import javax.swing.BoxLayout;
-import javax.swing.SwingConstants;
 
 public class GrooveJaar {
 	//Declarations
@@ -128,21 +104,24 @@ public class GrooveJaar {
 			("Year"),
 			("Track N."),
 			("Duration"),
-			("Action"),
+			//("Action"),
 			("Number")
 
 	};
 	public static HashMap<Integer,HashMap<String,String>> filterList = new HashMap<Integer,HashMap<String,String>>();
-
+	private ImageUtil image = new ImageUtil();
+	private JTable table;
 	public static JsonUser user = null;
-	public static final String version = "1.0.21 Beta";
+	public static final String version = "1.0.22 Beta";
+	private String lastVersionURL = "https://raw.github.com/Ale46/groovejaar/master/version.properties";
+	
 	private String[] column = {("Filename"), ("Status"),("Percentage") };
 	private static Option opt;
 	public static String downloadPath;
 	private static byte maxDownloads;
 	private static String skin;
 	public static Timer timer;
-	private final String projectPage = "";//"http://code.google.com/p/groovejaar/";
+	private final String projectPage = "https://github.com/Ale46/groovejaar";
 	private static int currentTab;
 	private int editingRow;
 	private int[] editingRows;
@@ -187,7 +166,7 @@ public class GrooveJaar {
 			public void run() {
 				final DefaultTableModel model = makeModel();
 				String searchKey =text;
-				final JTable table = new JTable(model);
+				table = new JTable(model);
 				TableRowSorter<TableModel> sorter  = new TableRowSorter<TableModel>(table.getModel());
 				table.setRowSorter(sorter);
 
@@ -202,10 +181,10 @@ public class GrooveJaar {
 				mnuShowOther.add(mnuShowLenght);
 				mnuShowOther.add(mnuShowTrack);
 				final JPopupMenu popupMenu = new JPopupMenu();
-				mnuDownloadAll.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/alldl.png"))));
-				mnuDownloaSelected.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/selectdl.png"))));
-				mnuShowOther.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/showtab.png"))));
-				mnuFilter.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/filter.png"))));
+				mnuDownloadAll.setIcon(image.getImgIcon("alldl.png"));
+				mnuDownloaSelected.setIcon(image.getImgIcon("selectdl.png"));
+				mnuShowOther.setIcon(image.getImgIcon("showtab.png"));
+				mnuFilter.setIcon(image.getImgIcon("filter.png"));
 				mnuShowLenght.setSelected(false);
 				mnuShowTrack.setSelected(false);
 
@@ -251,7 +230,7 @@ public class GrooveJaar {
 							table.getColumnModel().getColumn(5).setWidth(80);
 							table.getColumnModel().getColumn(5).setPreferredWidth(60);
 							mnuShowLenght.setSelected(true);
-							mnuShowLenght.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/check.png"))));
+							mnuShowLenght.setIcon(image.getImgIcon("check.png"));
 						}else{
 							table.getColumnModel().getColumn(5).setWidth(0);
 							table.getColumnModel().getColumn(5).setPreferredWidth(60);
@@ -272,7 +251,7 @@ public class GrooveJaar {
 							table.getColumnModel().getColumn(4).setWidth(60);
 							table.getColumnModel().getColumn(4).setPreferredWidth(60);
 							mnuShowTrack.setSelected(true);
-							mnuShowTrack.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/check.png"))));
+							mnuShowTrack.setIcon(image.getImgIcon("check.png"));
 						}else{							
 							table.getColumnModel().getColumn(4).setWidth(0);
 							table.getColumnModel().getColumn(4).setPreferredWidth(60);
@@ -328,7 +307,8 @@ public class GrooveJaar {
 						}
 					}
 				});
-				final TableColumnModel columnModel = table.getColumnModel();
+				//TODO
+				/*				final TableColumnModel columnModel = table.getColumnModel();
 				((DefaultTableCellRenderer)table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 
 
@@ -356,7 +336,7 @@ public class GrooveJaar {
 
 
 				columnModel.getColumn(6).setCellRenderer(buttonRenderer);
-				columnModel.getColumn(6).setCellEditor(buttonEditor);
+				columnModel.getColumn(6).setCellEditor(buttonEditor);*/
 				table.setShowGrid(false);
 
 				table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -364,71 +344,71 @@ public class GrooveJaar {
 
 						if (e.getValueIsAdjusting()) {
 
-							if (table.getSelectedColumn()!=6){
-								if (table.getSelectedRowCount()>1){
+							//if (table.getSelectedColumn()!=6){
+							if (table.getSelectedRowCount()>1){
 
-									int[] sel = table.getSelectedRows();
-									editingRows = new int[sel.length];
-									for (int i =0;i<editingRows.length;i++)
-										editingRows[i] =  Integer.parseInt((String) table.getValueAt(sel[i],7));
-								}else{
-									editingRows = null;
-									editingRow = Integer.parseInt((String) table.getValueAt(table.getSelectedRow(),7));
+								int[] sel = table.getSelectedRows();
+								editingRows = new int[sel.length];
+								for (int i =0;i<editingRows.length;i++)
+									editingRows[i] =  Integer.parseInt((String) table.getValueAt(sel[i],6));
+							}else{
+								editingRows = null;
+								editingRow = Integer.parseInt((String) table.getValueAt(table.getSelectedRow(),6));
+							}
+
+							//System.out.println(getCurrentTab());
+							//System.out.println(editingRow);
+							try {
+								if (opt.autoBitrateSize())
+									getBitrateAndSize(results.get(getCurrentTab())[editingRow].get("SongID"));
+								else{
+									lblBitrate.setText("<html>Bitrate: <font color='red'>Auto get bitrate Disabled (Go to option)</font></html>");
+									lblSize.setText("<html>Size: <font color='red'>Auto get size Disabled (Go to option)</font></html>");
 								}
 
-								//System.out.println(getCurrentTab());
-								//System.out.println(editingRow);
-								try {
-									if (opt.autoBitrateSize())
-										getBitrateAndSize(results.get(getCurrentTab())[editingRow].get("SongID"));
-									else{
-										lblBitrate.setText("<html>Bitrate: <font color='red'>Auto get bitrate Disabled (Go to option)</font></html>");
-										lblSize.setText("<html>Size: <font color='red'>Auto get size Disabled (Go to option)</font></html>");
-									}
+							} catch (IOException e1) {
 
-								} catch (IOException e1) {
+								e1.printStackTrace();
+							} catch (TagException e1) {
 
-									e1.printStackTrace();
-								} catch (TagException e1) {
+								e1.printStackTrace();
+							}
 
-									e1.printStackTrace();
-								}
-
-								String title = results.get(currentTab)[editingRow].get("SongName") != null ? results.get(currentTab)[editingRow].get("SongName") : results.get(currentTab)[editingRow].get("Name");
-								lblTitle.setText( ("<html>Title: <font color='blue'>")+title+"</font></html>");
-								lblAlbum.setText(("<html>Album: <font color='blue'>")+results.get(currentTab)[editingRow].get("AlbumName")+"</font></html>");
-								lblArtist.setText( ("<html>Artist: <font color='blue'>")+results.get(currentTab)[editingRow].get("ArtistName")+"</font></html>");
-								//if(results.get(currentTab)[editingRow].get("Year")!=null) lblYear.setText( ("<html>Year: <font color='blue'>")+results.get(currentTab)[editingRow].get("Year")+"</font></html>");
-								//else lblYear.setText( ("<html>Year: <font color='red'>N\\A")+"</font></html>");
-								/*if(!results.get(currentTab)[editingRow].get("TrackNum").equals("0")) lblTrackN.setText( ("<html>Track N.: <font color='blue'>")+results.get(currentTab)[editingRow].get("TrackNum")+"</font></html>");
+							String title = results.get(currentTab)[editingRow].get("SongName") != null ? results.get(currentTab)[editingRow].get("SongName") : results.get(currentTab)[editingRow].get("Name");
+							lblTitle.setText( ("<html>Title: <font color='blue'>")+title+"</font></html>");
+							lblAlbum.setText(("<html>Album: <font color='blue'>")+results.get(currentTab)[editingRow].get("AlbumName")+"</font></html>");
+							lblArtist.setText( ("<html>Artist: <font color='blue'>")+results.get(currentTab)[editingRow].get("ArtistName")+"</font></html>");
+							//if(results.get(currentTab)[editingRow].get("Year")!=null) lblYear.setText( ("<html>Year: <font color='blue'>")+results.get(currentTab)[editingRow].get("Year")+"</font></html>");
+							//else lblYear.setText( ("<html>Year: <font color='red'>N\\A")+"</font></html>");
+							/*if(!results.get(currentTab)[editingRow].get("TrackNum").equals("0")) lblTrackN.setText( ("<html>Track N.: <font color='blue'>")+results.get(currentTab)[editingRow].get("TrackNum")+"</font></html>");
 								else lblTrackN.setText( ("<html>Track N.: <font color='red'>N\\A")+"</font></html>");
-								 */
-								if(results.get(currentTab)[editingRow].get("CoverArtFilename")!=null){
-									ImageIcon i = null;
-									if (!results.get(currentTab)[editingRow].get("CoverArtFilename").isEmpty()){
-										//lblCoverArt.setText( ("<html>CoverArt: <font color='green'>Present")+"</font></html>");
+							 */
+							if(results.get(currentTab)[editingRow].get("CoverArtFilename")!=null){
+								ImageIcon i = null;
+								if (!results.get(currentTab)[editingRow].get("CoverArtFilename").isEmpty()){
+									//lblCoverArt.setText( ("<html>CoverArt: <font color='green'>Present")+"</font></html>");
 
-										try {
-											i = new ImageIcon(new URL("http://beta.grooveshark.com/static/amazonart/s"+results.get(currentTab)[editingRow].get("CoverArtFilename")));
-										} catch (MalformedURLException e1) {
+									try {
+										i = new ImageIcon(new URL("http://beta.grooveshark.com/static/amazonart/s"+results.get(currentTab)[editingRow].get("CoverArtFilename")));
+									} catch (MalformedURLException e1) {
 
-											e1.printStackTrace();
-										}
-										lblPreview.setIcon(i);
-										lblPreview.setEnabled(true);
-
-									}else {
-										//	lblCoverArt.setText( ("<html>CoverArt: <font color='red'>Not Present")+"</font></html>");
-										lblPreview.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("nocover.jpg"))));
-										lblPreview.setEnabled(false);
+										e1.printStackTrace();
 									}
-								}else{
-									//lblCoverArt.setText( ("<html>CoverArt: <font color='red'>Not Present")+"</font></html>");
-									lblPreview.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("nocover.jpg"))));
+									lblPreview.setIcon(i);
+									lblPreview.setEnabled(true);
+
+								}else {
+									//	lblCoverArt.setText( ("<html>CoverArt: <font color='red'>Not Present")+"</font></html>");
+									lblPreview.setIcon(image.getImgIcon("nocover.jpg"));
 									lblPreview.setEnabled(false);
 								}
-								//String lenght = results.get(currentTab)[editingRow].get("EstimateDuration");
-								/*
+							}else{
+								//lblCoverArt.setText( ("<html>CoverArt: <font color='red'>Not Present")+"</font></html>");
+								lblPreview.setIcon(image.getImgIcon("nocover.jpg"));
+								lblPreview.setEnabled(false);
+							}
+							//String lenght = results.get(currentTab)[editingRow].get("EstimateDuration");
+							/*
 								if(lenght!=null) {
 									if (!lenght.equals("0")){
 										//System.out.println(results.get(currentTab)[editingRow].get("EstimateDuration"));
@@ -439,9 +419,9 @@ public class GrooveJaar {
 								}else{
 									lblDuration.setText( ("<html>Duration: <font color='red'>N\\A")+"</font></html>"); 
 								}*/
-							}
 						}
 					}
+					//	}
 
 				});
 
@@ -457,9 +437,9 @@ public class GrooveJaar {
 				table.getColumnModel().getColumn(5).setPreferredWidth(0);
 				table.getColumnModel().getColumn(5).setMinWidth(0);
 				table.getColumnModel().getColumn(5).setMaxWidth(0);
-				table.getColumnModel().getColumn(7).setPreferredWidth(0);
-				table.getColumnModel().getColumn(7).setMinWidth(0);
-				table.getColumnModel().getColumn(7).setMaxWidth(0);
+				table.getColumnModel().getColumn(6).setPreferredWidth(0);
+				table.getColumnModel().getColumn(6).setMinWidth(0);
+				table.getColumnModel().getColumn(6).setMaxWidth(0);
 				panel.add(new JScrollPane(table), BorderLayout.CENTER);
 				HashMap<String, String>[] songs = null;
 				ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -499,7 +479,7 @@ public class GrooveJaar {
 				executor.shutdown();
 				for (int i = 0;i<songs.length;i++){
 
-					String[] newRow = { songs[i].get("SongName") != null ? songs[i].get("SongName") : songs[i].get("Name") ,songs[i].get("ArtistName"),songs[i].get("AlbumName"),songs[i].get("Year"),songs[i].get("TrackNum"),parseDuration(songs[i].get("EstimateDuration")),"",Integer.toString(i) };
+					String[] newRow = { songs[i].get("SongName") != null ? songs[i].get("SongName") : songs[i].get("Name") ,songs[i].get("ArtistName"),songs[i].get("AlbumName"),songs[i].get("Year"),songs[i].get("TrackNum"),parseDuration(songs[i].get("EstimateDuration")),Integer.toString(i) };
 					model.addRow(newRow);
 
 				}
@@ -872,7 +852,7 @@ public class GrooveJaar {
 		maxDownloads= opt.getMaxDownloads();
 		exec = Executors.newFixedThreadPool(maxDownloads);
 		ifExist = opt.getActionIfExist();
-		
+
 	}
 
 	private void checkTemp(){
@@ -912,7 +892,7 @@ public class GrooveJaar {
 
 	private String checkExists(String downloadName) {
 		File fx = new File(opt.getDownloadPath()+File.separator+downloadName+".mp3");
-		
+
 		if (fx.exists()){
 			if (ifExist.equalsIgnoreCase("Overwrite")){
 				fx.delete();
@@ -920,8 +900,8 @@ public class GrooveJaar {
 			}else if (ifExist.equalsIgnoreCase("Skip")){
 				return null;
 			}else{
-			
-					
+
+
 				Object[] options = {"Don't download", "Overwrite", "Rename"};
 				int n = JOptionPane.showOptionDialog(frmGroovejaar,
 						"The file you want do download already exists, What should I do??",
@@ -931,7 +911,7 @@ public class GrooveJaar {
 						null,     //do not use a custom Icon
 						options,  //the titles of buttons
 						options[0]); //default button title
-	
+
 				if (n==0||n==-1)
 					return null;
 				else if (n==1){
@@ -970,11 +950,11 @@ public class GrooveJaar {
 			showMessage(("Error"));
 	}
 
-	private void checkUpdate(boolean showNoUpdate) throws InterruptedException, ExecutionException{
+	private void checkUpdate(boolean showNoUpdate) throws InterruptedException, ExecutionException, MalformedURLException{
 
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		Future<Boolean> task = null;
-		task = executor.submit(new Updater());
+		task = executor.submit(new Updater(lastVersionURL));
 		if (task.get())
 			showMessage(("New version available, check the project page!"));
 		else
@@ -1057,16 +1037,17 @@ public class GrooveJaar {
 	 * Launch the application.
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
+	 * @throws ParseException 
 	 */
-	public static void main(String[] args) throws FileNotFoundException, IOException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+	public static void main(String[] args) throws FileNotFoundException, IOException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, ParseException {
 		initOptions();
 		try {
-
 			UIManager.setLookAndFeel(skin);
 		} catch (ClassNotFoundException e1) {
 
 			e1.printStackTrace();
 		}
+
 
 		EventQueue.invokeLater(new Runnable() {
 
@@ -1125,16 +1106,16 @@ public class GrooveJaar {
 	private void initialize() {
 		frmGroovejaar = new JFrame();
 
-		frmGroovejaar.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
+		frmGroovejaar.setIconImage(image.getLogo());
 		frmGroovejaar.setTitle("GrooveJaar");
-		frmGroovejaar.setBounds(100, 100, 850, 629);
+		frmGroovejaar.setBounds(100, 100, 850, 651);
 		frmGroovejaar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
 		frmGroovejaar.setLocationRelativeTo(null);
 
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, ("Selected Song Info"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Selected Song Info", TitledBorder.RIGHT, TitledBorder.TOP, null, null));
 
 		jTabbedPane = new ClosableTabbedPane(JTabbedPane.TOP);
 		jTabbedPane.addChangeListener(new ChangeListener() {
@@ -1172,56 +1153,55 @@ public class GrooveJaar {
 		menuBar.setBorderPainted(false);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), ("Search"), TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Search", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), ("Downloads List"), TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 
 		JPanel panel_4 = new JPanel();
 		panel_4.setAlignmentX(Component.LEFT_ALIGNMENT);
-		panel_4.setBorder(new TitledBorder(null, "Action", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Actions", TitledBorder.RIGHT, TitledBorder.TOP, null, null));
 		GroupLayout groupLayout = new GroupLayout(frmGroovejaar.getContentPane());
 		groupLayout.setHorizontalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addComponent(menuBar, GroupLayout.DEFAULT_SIZE, 834, Short.MAX_VALUE)
 				.addGroup(groupLayout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 306, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(panel, GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE))
-										.addGroup(groupLayout.createSequentialGroup()
-												.addComponent(jTabbedPane, GroupLayout.DEFAULT_SIZE, 711, Short.MAX_VALUE)
-												.addPreferredGap(ComponentPlacement.UNRELATED)
-												.addComponent(panel_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-												.addContainerGap())
-												.addGroup(groupLayout.createSequentialGroup()
-														.addContainerGap()
-														.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 814, Short.MAX_VALUE)
-														.addContainerGap())
-				);
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 306, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(jTabbedPane, GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(panel_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 814, Short.MAX_VALUE)
+					.addContainerGap())
+		);
 		groupLayout.setVerticalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-						.addComponent(menuBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
-								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
-								.addGap(11)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(jTabbedPane, GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
-										.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
-										.addContainerGap())
-				);
+					.addComponent(menuBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(jTabbedPane, GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+						.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE))
+		);
 		panel_4.setLayout(new BoxLayout(panel_4, BoxLayout.Y_AXIS));
 
 		JButton btnAddLib = new JButton("");
 		btnAddLib.setHorizontalAlignment(SwingConstants.LEFT);
 		btnAddLib.setToolTipText("Add to User Lib");
-		btnAddLib.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/user.png"))));
+		btnAddLib.setIcon(image.getImgIcon("user.png"));
 		btnAddLib.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (user == null)
@@ -1245,7 +1225,7 @@ public class GrooveJaar {
 
 		JButton btnPlay = new JButton("");
 		btnPlay.setToolTipText("Play");
-		btnPlay.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/play.png"))));
+		btnPlay.setIcon(image.getImgIcon("play.png"));
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!player.frame.isVisible()){
@@ -1262,7 +1242,7 @@ public class GrooveJaar {
 
 		JButton btnAddToQueue = new JButton("");
 		btnAddToQueue.setToolTipText("Add to Queue");
-		btnAddToQueue.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/addqueue.png"))));
+		btnAddToQueue.setIcon(image.getImgIcon("addqueue.png"));
 		btnAddToQueue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!player.frame.isVisible()){
@@ -1285,7 +1265,7 @@ public class GrooveJaar {
 		JButton btnAddFav = new JButton("");
 		btnAddFav.setAlignmentY(0.0f);
 		btnAddFav.setToolTipText("Add to favorites");
-		btnAddFav.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/fav.png"))));
+		btnAddFav.setIcon(image.getImgIcon("fav.png"));
 		btnAddFav.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (user == null)
@@ -1309,6 +1289,7 @@ public class GrooveJaar {
 		});
 
 		JButton button_3 = new JButton("");
+		button_3.setToolTipText("Add to user's Playlist");
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (user == null)
@@ -1342,12 +1323,13 @@ public class GrooveJaar {
 						showMessage("No playlist found, you need to create one first");
 			}
 		});
-		button_3.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/addplaylist.png"))));
+		button_3.setIcon(image.getImgIcon("addplaylist.png"));
 		panel_4.add(button_3);
 		panel_4.add(btnAddFav);
 		panel_4.add(btnAddLib);
 
 		JButton button_2 = new JButton("");
+		button_2.setToolTipText("Get song's lyric");
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable(){
@@ -1391,8 +1373,21 @@ public class GrooveJaar {
 
 			}
 		});
-		button_2.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/lyrics.png"))));
+		button_2.setIcon(image.getImgIcon("lyrics.png"));
 		panel_4.add(button_2);
+		
+		JButton btnDownload = new JButton("");
+		btnDownload.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				//TODO
+				editingRow = Integer.parseInt((String) table.getValueAt(table.getSelectedRow(),6));
+				addToDownload(editingRow);
+				
+			}
+		});
+		btnDownload.setIcon(image.getImgIcon("download.png"));
+		panel_4.add(btnDownload);
 
 		JScrollPane scrollPane = new JScrollPane();
 
@@ -1407,9 +1402,9 @@ public class GrooveJaar {
 		final JMenuItem mnuListDelete = new JMenuItem("Delete from this list");
 		final JMenuItem mnuDiskDelete= new JMenuItem("Delete from the disk");
 		final JPopupMenu popupMenu = new JPopupMenu();
-		mnuPlay.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/playmenu.png"))));
-		mnuDiskDelete.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/delete.png"))));
-		mnuListDelete.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/listdelete.png"))));
+		mnuPlay.setIcon(image.getImgIcon("playmenu.png"));
+		mnuDiskDelete.setIcon(image.getImgIcon("delete.png"));
+		mnuListDelete.setIcon(image.getImgIcon("listdelete.png"));
 
 		mnuPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -1518,7 +1513,7 @@ public class GrooveJaar {
 
 		JButton button = new JButton("");
 		button.setToolTipText(("Clear Search Box"));
-		button.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/clear.png"))));
+		button.setIcon(image.getImgIcon("clear.png"));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				txtSearch.setText("");
@@ -1527,7 +1522,7 @@ public class GrooveJaar {
 
 		JButton button_1 = new JButton("");
 		button_1.setToolTipText(("Search!"));
-		button_1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/find.png"))));
+		button_1.setIcon(image.getImgIcon("find.png"));
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -1574,7 +1569,7 @@ public class GrooveJaar {
 		menuBar.add(mnFile);
 
 		JMenuItem mntmExit = new JMenuItem(("Exit"));
-		mntmExit.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/exit.png"))));
+		mntmExit.setIcon(image.getImgIcon("exit.png"));
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
@@ -1582,7 +1577,7 @@ public class GrooveJaar {
 		});
 
 		JMenuItem mntmOpenProjectPage = new JMenuItem(("Open Project Page"));
-		mntmOpenProjectPage.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/open.png"))));
+		mntmOpenProjectPage.setIcon(image.getImgIcon("open.png"));
 		mntmOpenProjectPage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -1599,7 +1594,7 @@ public class GrooveJaar {
 		mnFile.add(mntmOpenProjectPage);
 
 		JMenuItem mntmOpenDownloadDir = new JMenuItem(("Open Download Path"));
-		mntmOpenDownloadDir.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/folder.png"))));
+		mntmOpenDownloadDir.setIcon(image.getImgIcon("folder.png"));
 		mntmOpenDownloadDir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -1623,7 +1618,7 @@ public class GrooveJaar {
 		menuBar.add(mnTools);
 
 		JMenu mnGet = new JMenu(("Get Top Songs"));
-		mnGet.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/topsongs.png"))));
+		mnGet.setIcon(image.getImgIcon("topsongs.png"));
 		mnTools.add(mnGet);
 
 		JMenuItem mntmGetTopSongs = new JMenuItem(("Of the Day"));
@@ -1644,7 +1639,7 @@ public class GrooveJaar {
 		});
 
 		JMenuItem mntmGetSongsFrom = new JMenuItem(("Get songs from Playlist"));
-		mntmGetSongsFrom.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/playlist.png"))));
+		mntmGetSongsFrom.setIcon(image.getImgIcon("playlist.png"));
 		mntmGetSongsFrom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String url = JOptionPane.showInputDialog(null,
@@ -1662,7 +1657,7 @@ public class GrooveJaar {
 		mnTools.add(mntmGetSongsFrom);
 
 		JMenuItem mntmGetSongsFrom_1 = new JMenuItem(("Get songs from Album"));
-		mntmGetSongsFrom_1.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/album.png"))));
+		mntmGetSongsFrom_1.setIcon(image.getImgIcon("album.png"));
 		mntmGetSongsFrom_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String url = JOptionPane.showInputDialog(null,
@@ -1682,7 +1677,7 @@ public class GrooveJaar {
 		mnTools.add(separator_3);
 
 		JMenuItem mntmShowInternalPlayer = new JMenuItem("Show Internal Player");
-		mntmShowInternalPlayer.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/showplayer.png"))));
+		mntmShowInternalPlayer.setIcon(image.getImgIcon("showplayer.png"));
 		mntmShowInternalPlayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				player.frame.pack();
@@ -1697,7 +1692,7 @@ public class GrooveJaar {
 		menuBar.add(mnSettings);
 
 		JMenuItem mntmManageOptions = new JMenuItem(("Manage Options"));
-		mntmManageOptions.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/settings.png"))));
+		mntmManageOptions.setIcon(image.getImgIcon("settings.png"));
 		mntmManageOptions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -1717,7 +1712,7 @@ public class GrooveJaar {
 		mnSettings.add(separator);
 
 		JMenu mnSetSkin = new JMenu(("Set Skin"));
-		mnSetSkin.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/skins.png"))));
+		mnSetSkin.setIcon(image.getImgIcon("skins.png"));
 		mnSettings.add(mnSetSkin);
 
 		JMenuItem mntmSystem = new JMenuItem("System");
@@ -1820,7 +1815,7 @@ public class GrooveJaar {
 		menuBar.add(mnGroove);
 
 		mntmLogin = new JMenuItem("Login");
-		mntmLogin.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/login.png"))));
+		mntmLogin.setIcon(image.getImgIcon("login.png"));
 		mnGroove.add(mntmLogin);
 		mntmLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -1871,7 +1866,7 @@ public class GrooveJaar {
 				dis.setVisible(true);
 			}
 		});
-		mntmDisclaimer.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/disclaimer.png"))));
+		mntmDisclaimer.setIcon(image.getImgIcon("disclaimer.png"));
 		menu.add(mntmDisclaimer);
 
 		JMenuItem mntmCheckUpdate = new JMenuItem(("Check Update"));
@@ -1883,6 +1878,9 @@ public class GrooveJaar {
 					showMessage(("Unable to check udpate"));
 					e.printStackTrace();
 				} catch (ExecutionException e) {
+					showMessage(("Unable to check udpate"));
+					e.printStackTrace();
+				} catch (MalformedURLException e) {
 					showMessage(("Unable to check udpate"));
 					e.printStackTrace();
 				}
@@ -1908,11 +1906,11 @@ public class GrooveJaar {
 		menu.add(mntmLikeMeOn);
 
 
-		mntmLikeMeOn.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/facebook.png"))));
+		mntmLikeMeOn.setIcon(image.getImgIcon("facebook.png"));
 		mntmLikeMeOn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					openURL("https://www.facebook.com/pages/GrooveJaar/207506022642084");
+					openURL("https://www.facebook.com/GrooveJaar");
 				} catch (IOException e) {
 
 					e.printStackTrace();
@@ -1922,16 +1920,33 @@ public class GrooveJaar {
 				}
 			}
 		});
-		mntmMakeMeHappy.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/paypal.png"))));
+		
+		JMenuItem mntmFollowWhoMade = new JMenuItem("Follow who made this S*#t");
+		mntmFollowWhoMade.setIcon(image.getImgIcon("twitter.png"));
+		mntmFollowWhoMade.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					openURL("https://twitter.com/#!/Ale467");
+				} catch (IOException e) {
+
+					e.printStackTrace();
+				} catch (URISyntaxException e) {
+
+					e.printStackTrace();
+				}
+			}
+		});
+		menu.add(mntmFollowWhoMade);
+		mntmMakeMeHappy.setIcon(image.getImgIcon("paypal.png"));
 		menu.add(mntmMakeMeHappy);
-		mntmCheckUpdate.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/update.png"))));
+		mntmCheckUpdate.setIcon(image.getImgIcon("update.png"));
 		menu.add(mntmCheckUpdate);
 
 		JSeparator separator_1 = new JSeparator();
 		menu.add(separator_1);
 
 		JMenuItem mntmInfo = new JMenuItem(("Info"));
-		mntmInfo.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/info.png"))));
+		mntmInfo.setIcon(image.getImgIcon("info.png"));
 		mntmInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Info infoWind = new Info();

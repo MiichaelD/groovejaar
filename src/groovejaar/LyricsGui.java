@@ -6,14 +6,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import javax.swing.ImageIcon;
+
 import javax.swing.JTextArea;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Font;
-import java.awt.Toolkit;
+
 
 
 public class LyricsGui extends JFrame {
@@ -23,7 +23,7 @@ public class LyricsGui extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private ImageIcon i = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
+	
 
 
 	/**
@@ -31,7 +31,7 @@ public class LyricsGui extends JFrame {
 	 */
 	public LyricsGui(String text) {
 		setTitle("Lyrics");
-		setIconImage(i.getImage());
+		this.setIconImage(new ImageUtil().getLogo());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 560, 343);
 		contentPane = new JPanel();

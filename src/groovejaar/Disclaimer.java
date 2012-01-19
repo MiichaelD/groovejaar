@@ -6,9 +6,7 @@ package groovejaar;
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  ******************************************************************************/
-import java.awt.Toolkit;
 
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -18,7 +16,7 @@ import java.awt.Font;
 
 public class Disclaimer extends JDialog {
 	
-	private ImageIcon i = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
+	
 	/**
 	 * 
 	 */
@@ -31,7 +29,7 @@ public class Disclaimer extends JDialog {
 	 */
 	public Disclaimer() {
 		setTitle("Disclaimer");
-		setIconImage(i.getImage());
+		this.setIconImage(new ImageUtil().getLogo());
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		

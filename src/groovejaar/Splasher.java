@@ -20,7 +20,7 @@ public class Splasher {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        SplashWindow.splash(Splasher.class.getResource("icon.png"));
+        SplashWindow.splash(ClassLoader.getSystemResource("images/icon.png"));
         SplashWindow.invokeMain("groovejaar.GrooveJaar", args);
         SplashWindow.disposeSplash();
     }
