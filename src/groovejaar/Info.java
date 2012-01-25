@@ -57,8 +57,8 @@ public class Info extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		//FIXME
-		JLabel lblImage = new JLabel(new ImageUtil().getImgIcon("logo.png"));
+		
+		JLabel lblImage = new JLabel(new ImageUtil().getImgIcon("icon.png"));
 		
 		JLabel lblVersion = new JLabel(("Version: ")+GrooveJaar.version);
 		lblVersion.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
