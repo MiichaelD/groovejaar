@@ -71,7 +71,8 @@ public class JGroovex {
 		parameters.put("guts", 0);
 		parameters.put("ppOverride", false);
 
-		String response = JGroove.callMethod(parameters, "getSearchResultsEx");
+		//String response = JGroove.callMethod(parameters, "getSearchResultsEx");
+		String response = JGroove.callMethod(parameters, "getResultsFromSearch");
 		return (new Gson().fromJson(response, JsonSearchResults.class));
 	}
 

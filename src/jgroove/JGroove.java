@@ -56,9 +56,9 @@ public abstract class JGroove {
 
     public static final String nameHTML = "htmlshark"; 
     public static final String nameJS = "jsqueue"; 
-    public static final String versionHTML = "20110906";
-    public static final String versionJS = "20110906.02";
-    public static final String swfVersion = "20110912.02";
+    public static final String versionHTML = "20120123";
+    public static final String versionJS = "20120123.02";
+    public static final String swfVersion = "20120124.01";
     public static String password = new String();
     private static boolean needNewToken = false;
     private static Timer timer = new Timer();

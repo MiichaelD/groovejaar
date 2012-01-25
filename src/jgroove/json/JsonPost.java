@@ -86,9 +86,9 @@ public class JsonPost {
 			
 			this.header.put("client", JGroove.nameJS);
 			this.header.put("clientRevision", JGroove.versionJS);
-			JGroove.password = "theTicketsAreNowDiamonds";
+			JGroove.password = "theEndOfThePenny";
 		}
-		else if (method.equalsIgnoreCase("getSearchResultsEx")||
+		else if (method.equalsIgnoreCase("getResultsFromSearch")||
 				method.equalsIgnoreCase("authenticateUser")|| 
 				method.equalsIgnoreCase("playlistAddSongToExisting") || 
 				method.equalsIgnoreCase("createPlaylist") ||
@@ -107,7 +107,7 @@ public class JsonPost {
 			
 			this.header.put("client", JGroove.nameHTML);
 			this.header.put("clientRevision", JGroove.versionHTML);
-			JGroove.password = "imOnAHorse";
+			JGroove.password = "sloppyJoes";
 		}
 		
 		if (JGroove.getCurrentSessionID().isEmpty()){
