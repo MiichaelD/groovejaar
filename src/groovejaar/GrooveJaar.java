@@ -307,7 +307,7 @@ public class GrooveJaar {
 						}
 					}
 				});
-				//TODO
+				
 				/*				final TableColumnModel columnModel = table.getColumnModel();
 				((DefaultTableCellRenderer)table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 
@@ -1380,7 +1380,7 @@ public class GrooveJaar {
 		btnDownload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				//TODO
+				
 				editingRow = Integer.parseInt((String) table.getValueAt(table.getSelectedRow(),6));
 				addToDownload(editingRow);
 				
@@ -1891,7 +1891,7 @@ public class GrooveJaar {
 		mntmMakeMeHappy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					openURL("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=RFMAKH4HU66G2&lc=IT&item_name=Thanks%20for%20GrooveJaar&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted");
+					openURL("http://www.emergency.it/flex/FixedPages/Common/donazioni.php/L/EN/trk/1.17");
 				} catch (IOException e) {
 
 					e.printStackTrace();

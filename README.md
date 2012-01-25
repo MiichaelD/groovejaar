@@ -2,7 +2,7 @@
 
 This project want to provide a desktop based client for the [Grooveshark Service](http://grooveshark.com/). 
 
-GrooveJaar is written in **JAVA*, is **OPEN SOURCE**  and support Windows, Mac and Linux systems. The aim is to have a small client that can be a good alternative to the web service of grooveshark that, in certain cases , is really slow and require a lot of resources that make the grooveshark experience really annoying.
+GrooveJaar is written in **JAVA**, is **OPEN SOURCE**  and support Windows, Mac and Linux systems. The aim is to have a small client that can be a good alternative to the web service of grooveshark that, in certain cases , is really slow and require a lot of resources that make the grooveshark experience really annoying.
  
  
 ## Build

@@ -6,14 +6,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.ImageIcon;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.RowFilter;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -32,14 +31,14 @@ public class Filter extends JFrame {
 	private JTextField txtFilterYear;
 	private JTextField txtFilterTitle;
 	private JTextField txtFilterArtist;
-	private ImageIcon i = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
+
 
 	/**
 	 * Create the frame.
 	 */
 	public Filter() {
 		setTitle("Filter");
-		setIconImage(i.getImage());
+		setIconImage(new ImageUtil().getLogo());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		
