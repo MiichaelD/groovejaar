@@ -216,7 +216,7 @@ public class GrooveJaar {
 						int[] rows = table.getSelectedRows();
 						for (int i = 0;i<rows.length;i++){
 
-							addToDownload(Integer.parseInt((String) table.getValueAt(rows[i],7)));
+							addToDownload(Integer.parseInt((String) table.getValueAt(rows[i],6)));
 						}
 					}
 				});
