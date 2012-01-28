@@ -86,7 +86,7 @@ public class JsonPost {
 			
 			this.header.put("client", JGroove.nameJS);
 			this.header.put("clientRevision", JGroove.versionJS);
-			JGroove.password = "theEndOfThePenny";
+			JGroove.password = "helloScumbagSteve";
 		}
 		else if (method.equalsIgnoreCase("getResultsFromSearch")||
 				method.equalsIgnoreCase("authenticateUser")|| 
