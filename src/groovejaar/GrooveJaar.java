@@ -77,6 +77,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import jgroove.JGroove;
 import jgroove.JGroovex;
 import jgroove.jsonx.JsonGetSong.Result;
 import jgroove.jsonx.JsonUser;
@@ -1076,8 +1077,8 @@ public class GrooveJaar {
 		try {
 			//CountryUtil.initCountryCode();
 
-			JGroovex.initiateQueue();
-
+			//JGroovex.initiateQueue();
+			JGroove.getToken();
 		} catch (IOException e) {
 			showMessage("Fatal error.. Grooveshark.com seems to be down..");
 			e.printStackTrace();

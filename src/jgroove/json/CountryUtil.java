@@ -87,7 +87,7 @@ public class CountryUtil {
 
 	}
 	
-	public static void  initCountryCode(){
+	public void  initCountryCode(){
 		String json = (getHTML()).toString();
 		int start = json.lastIndexOf("\"country\":{")+10;
 		int end = json.indexOf("},",start)+1;

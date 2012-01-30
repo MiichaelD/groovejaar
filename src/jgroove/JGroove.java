@@ -23,8 +23,7 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+
 import java.util.UUID;
 import java.security.MessageDigest;
 
@@ -46,7 +45,7 @@ import java.security.NoSuchAlgorithmException;
  * @author Aitor Ruano Miralles <0x077d@gmail.com>
  */
 public abstract class JGroove {
-    public static final String domain = "grooveshark.com";
+    public static final String domain = "cowbell.grooveshark.com";
     public static final String methodphp = "more.php"; //service.php
     public static final String streamphp = "stream.php";
     public static String protocol = "http"; //https
@@ -60,8 +59,8 @@ public abstract class JGroove {
     public static final String versionJS = "20120123.02";
     public static final String swfVersion = "20120124.01";
     public static String password = new String();
-    private static boolean needNewToken = false;
-    private static Timer timer = new Timer();
+
+   // private static Timer timer = new Timer();
     public static int newTokenTime = 960; //16mins
     public static final String uuid = UUID.randomUUID().toString();
 
@@ -108,7 +107,7 @@ public abstract class JGroove {
      * @throws IOException
      */
     public static String getSecretKey() throws IOException {
-        if (JGroove.sessionid.isEmpty()){
+/*        if (JGroove.sessionid.isEmpty()){
     		timer.schedule(new TimerTask() { //renew token every 16 mins
     			public void run() {
     				System.out.println("Starting timer");
@@ -116,8 +115,8 @@ public abstract class JGroove {
     			}
     		}, newTokenTime * 1000);
         	JGroove.getSessionID();
-        }
-
+        }*/
+    	if (JGroove.sessionid.isEmpty())JGroove.getSessionID();
         try {
 
             MessageDigest md5 = MessageDigest.getInstance("MD5");
@@ -152,7 +151,8 @@ public abstract class JGroove {
     public static String getToken() throws IOException {
         HashMap<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("secretKey", JGroove.getSecretKey());
-        //parameters.put("country", jgroove.json.JsonPost.country);
+       
+        parameters.put("country", jgroove.json.JsonPost.country);
         String response = JGroove.callMethod(parameters, "getCommunicationToken");
         JGroove.token = (new Gson().fromJson(response, JsonToken.class).result);
         return JGroove.token;
@@ -177,18 +177,18 @@ public abstract class JGroove {
      * @throws IOException
      */
     public static String getTokenKey(String method) throws IOException {
-        if (JGroove.token.isEmpty()||needNewToken) {
-        	JGroove.getToken();
-        	needNewToken = false;
-        }
 
+    	if (JGroove.token.isEmpty()) JGroove.getToken();
         StringBuilder randomhex = new StringBuilder();
         Random rand = new Random();
         while (6 > randomhex.length()) {
             randomhex.append("0123456789abcdef".charAt(rand.nextInt(16)));
         }
+        
         String pass = method + ":" + JGroove.token + ":" + JGroove.password + ":" + randomhex.toString();
-
+      
+        System.out.println(pass);
+        
         try {
 
             MessageDigest sha1 = MessageDigest.getInstance("SHA1");
@@ -230,11 +230,11 @@ public abstract class JGroove {
         JsonPost json = new JsonPost(parameters, method);
         if (!method.equalsIgnoreCase("getCommunicationToken")) {
             json.header.put("token", JGroove.getTokenKey(method));
+          
         }
- 
-
+        
         String data = new Gson().toJson(json);
-
+        System.out.println(data);
         try {
 
             URL url = new URL(methodurl);

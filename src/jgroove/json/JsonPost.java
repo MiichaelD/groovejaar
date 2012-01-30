@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.io.IOException;
 
 import jgroove.JGroove;
-import jgroove.JGroovex;
+
 import jgroove.jsonx.JsonCountry;
 
 /**
@@ -31,6 +31,7 @@ import jgroove.jsonx.JsonCountry;
  * used out of there but if you want to complicate your life.
  * @author Aitor Ruano Miralles <0x077d@gmail.com>
  */
+@SuppressWarnings("null")
 public class JsonPost {
 	public final HashMap<String, Object> header = new HashMap<String, Object>();
 	{
@@ -42,16 +43,20 @@ public class JsonPost {
 	public static final HashMap<String, String> country = new HashMap<String, String>();
 	static {
 		JsonCountry jcountry = new JsonCountry();
-		try {
-			jcountry = JGroovex.getCountry();
-		} catch (IOException e) { //if error default country values
+		//try {
+			//jcountry = JGroovex.getCountry();
+			CountryUtil c = new CountryUtil();
+			c.initCountryCode();
+			jcountry = c.getCountryCode();
+		//} catch (IOException e) { //if error default country values
+		if (jcountry == null){
 			jcountry.IPR = "1201";
 			jcountry.ID = "223";
 			jcountry.CC1 = "0";
 			jcountry.CC2 = "0";
 			jcountry.CC3 = "0";
 			jcountry.CC4 = "2147483648";
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		country.put("ID", jcountry.ID);
 		country.put("CC1", jcountry.CC1);
@@ -60,10 +65,10 @@ public class JsonPost {
 		country.put("CC4", jcountry.CC4);
 		country.put("IPR", jcountry.IPR);
 	}
-	
+
 	public HashMap<String, Object> parameters;
 	public String method;
-	
+
 
 	/**
 	 * Attach the parameters and the method to the JsonPost abstract class to
@@ -73,20 +78,29 @@ public class JsonPost {
 	 * @param method Method to call
 	 */
 	public JsonPost(HashMap<String, Object> parameters, String method) throws IOException{
+		
 		this.parameters = parameters;
 		this.method = method;
 
-		//System.out.println("DEBUGGGGG:"+method);
-
-		if (method.equalsIgnoreCase("getStreamKeyFromSongIDEx")  || 
-			method.equalsIgnoreCase("markSongComplete") || 
-			method.equalsIgnoreCase("markSongDownloadedEx")||
-			method.equalsIgnoreCase("markStreamKeyOver30Seconds"))
-		{
+		System.out.println("DEBUGGGGG:"+method);
+		
+		if (method.equalsIgnoreCase("getCommunicationToken")){
 			
+			JGroove.password = "needMoreCowbell ";
+			this.header.put("client", JGroove.nameHTML);
+			this.header.put("clientRevision", JGroove.versionHTML);
+			
+		}
+		
+		else if (method.equalsIgnoreCase("getStreamKeyFromSongIDEx")  || 
+				method.equalsIgnoreCase("markSongComplete") || 
+				method.equalsIgnoreCase("markSongDownloadedEx")||
+				method.equalsIgnoreCase("markStreamKeyOver30Seconds"))
+		{
+
 			this.header.put("client", JGroove.nameJS);
 			this.header.put("clientRevision", JGroove.versionJS);
-			JGroove.password = "helloScumbagSteve";
+			JGroove.password = "ieSuxBalz";
 		}
 		else if (method.equalsIgnoreCase("getResultsFromSearch")||
 				method.equalsIgnoreCase("authenticateUser")|| 
@@ -98,24 +112,23 @@ public class JsonPost {
 				method.equalsIgnoreCase("userAddSongsToLibrary") || 
 				method.equalsIgnoreCase("userGetPlaylists")||
 				method.equalsIgnoreCase("userGetSongsInLibrary")||
-				method.equalsIgnoreCase("getCommunicationToken")||
 				method.equalsIgnoreCase("authenticateUser")||
 				method.equalsIgnoreCase("getFavorites")||
 				method.equalsIgnoreCase("favorite")||
 				method.equalsIgnoreCase("getCountry")||
 				method.equalsIgnoreCase("albumGetSongs")){
-			
+
 			this.header.put("client", JGroove.nameHTML);
 			this.header.put("clientRevision", JGroove.versionHTML);
 			JGroove.password = "sloppyJoes";
 		}
-		
+		System.out.println("set:"+JGroove.password);
 		if (JGroove.getCurrentSessionID().isEmpty()){
 			this.header.put("session", JGroove.getSessionID());
 		} else {
 			this.header.put("session", JGroove.getCurrentSessionID());
 		}
-		
-		
+
+
 	}
 }

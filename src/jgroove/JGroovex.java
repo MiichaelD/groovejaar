@@ -350,6 +350,7 @@ public class JGroovex {
 		parameters.put("prefetch", false);
 
 		String response = JGroove.callMethod(parameters, "getStreamKeyFromSongIDEx");
+		//System.out.println(response);
 		return (new Gson().fromJson(response, JsonGetSong.class));
 	}
 
