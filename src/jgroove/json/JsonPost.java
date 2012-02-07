@@ -86,7 +86,7 @@ public class JsonPost {
 		
 		if (method.equalsIgnoreCase("getCommunicationToken")){
 			
-			JGroove.password = "needMoreCowbell ";
+			
 			this.header.put("client", JGroove.nameHTML);
 			this.header.put("clientRevision", JGroove.versionHTML);
 			

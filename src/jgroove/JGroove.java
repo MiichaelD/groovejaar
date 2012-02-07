@@ -153,7 +153,9 @@ public abstract class JGroove {
         parameters.put("secretKey", JGroove.getSecretKey());
        
         parameters.put("country", jgroove.json.JsonPost.country);
+        JGroove.methodurl = "https"+ "://"  + JGroove.domain+ "/"+ JGroove.methodphp;
         String response = JGroove.callMethod(parameters, "getCommunicationToken");
+        JGroove.methodurl = "http"+ "://"  + JGroove.domain+ "/"+ JGroove.methodphp;
         JGroove.token = (new Gson().fromJson(response, JsonToken.class).result);
         return JGroove.token;
     }
