@@ -96,13 +96,13 @@ public class Info extends JDialog {
 					.addComponent(lblImage, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGap(478))
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(213)
-					.addComponent(lblVersion, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(164, Short.MAX_VALUE))
-				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(dtrpnrnthirdpartySoftwareInvolved, GroupLayout.PREFERRED_SIZE, 509, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(30, Short.MAX_VALUE))
+					.addContainerGap(165, Short.MAX_VALUE))
+				.addGroup(gl_contentPanel.createSequentialGroup()
+					.addGap(171)
+					.addComponent(lblVersion, GroupLayout.PREFERRED_SIZE, 223, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(155, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.TRAILING)

@@ -22,6 +22,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -35,6 +36,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
@@ -113,7 +115,7 @@ public class GrooveJaar {
 	private ImageUtil image = new ImageUtil();
 	private JTable table;
 	public static JsonUser user = null;
-	public static final String version = "1.0.22 Beta";
+	public static final String version = getVersion();
 	private String lastVersionURL = "https://raw.github.com/Ale46/groovejaar/master/version.properties";
 	
 	private String[] column = {("Filename"), ("Status"),("Percentage") };
@@ -159,6 +161,18 @@ public class GrooveJaar {
 			}
 		};
 		return model;
+	}
+	
+	private static String getVersion() {
+		Properties prop = new Properties();
+		try {
+			prop.load(GrooveJaar.class.getResourceAsStream("version.properties"));
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+			return "1.0.0";
+		}
+		return prop.getProperty("version");
 	}
 
 	protected JComponent makeTextPanel(final String text, final String type, final int newTab) throws Exception {
