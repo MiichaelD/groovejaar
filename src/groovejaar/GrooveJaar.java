@@ -116,7 +116,7 @@ public class GrooveJaar {
 	private JTable table;
 	public static JsonUser user = null;
 	public static final String version = getVersion();
-	private String lastVersionURL = "https://raw.github.com/Ale46/groovejaar/master/version.properties";
+	private String lastVersionURL = "https://raw.github.com/Ale46/groovejaar/master/src/groovejaar/version.properties";
 	
 	private String[] column = {("Filename"), ("Status"),("Percentage") };
 	private static Option opt;
