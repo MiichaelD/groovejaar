@@ -84,15 +84,9 @@ public class JsonPost {
 
 		System.out.println("DEBUGGGGG:"+method);
 		
-		if (method.equalsIgnoreCase("getCommunicationToken")){
-			
-			
-			this.header.put("client", JGroove.nameHTML);
-			this.header.put("clientRevision", JGroove.versionHTML);
-			
-		}
+
 		
-		else if (method.equalsIgnoreCase("getStreamKeyFromSongIDEx")  || 
+		 if (method.equalsIgnoreCase("getStreamKeyFromSongIDEx")  || 
 				method.equalsIgnoreCase("markSongComplete") || 
 				method.equalsIgnoreCase("markSongDownloadedEx")||
 				method.equalsIgnoreCase("markStreamKeyOver30Seconds"))
@@ -100,9 +94,10 @@ public class JsonPost {
 
 			this.header.put("client", JGroove.nameJS);
 			this.header.put("clientRevision", JGroove.versionJS);
-			JGroove.password = "ieSuxBalz";
+			JGroove.password = "everydayImBufferin";
 		}
-		else if (method.equalsIgnoreCase("getResultsFromSearch")||
+		else if (method.equalsIgnoreCase("getCommunicationToken")||
+				method.equalsIgnoreCase("getResultsFromSearch")||
 				method.equalsIgnoreCase("authenticateUser")|| 
 				method.equalsIgnoreCase("playlistAddSongToExisting") || 
 				method.equalsIgnoreCase("createPlaylist") ||
@@ -120,7 +115,7 @@ public class JsonPost {
 
 			this.header.put("client", JGroove.nameHTML);
 			this.header.put("clientRevision", JGroove.versionHTML);
-			JGroove.password = "sloppyJoes";
+			JGroove.password = "evilHackersAreInOurFuture";
 		}
 		System.out.println("set:"+JGroove.password);
 		if (JGroove.getCurrentSessionID().isEmpty()){

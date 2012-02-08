@@ -172,7 +172,7 @@ public class GrooveJaar {
 			e.printStackTrace();
 			return "1.0.0";
 		}
-		return prop.getProperty("version");
+		return prop.getProperty("version") + " BETA";
 	}
 
 	protected JComponent makeTextPanel(final String text, final String type, final int newTab) throws Exception {
