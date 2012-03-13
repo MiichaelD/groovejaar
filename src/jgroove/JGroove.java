@@ -55,8 +55,8 @@ public abstract class JGroove {
 
     public static final String nameHTML = "htmlshark"; 
     public static final String nameJS = "jsqueue"; 
-    public static final String versionHTML = "20120206";
-    public static final String versionJS = "20120206.01";
+    public static final String versionHTML = "20120227";
+    public static final String versionJS = "20120227.01";
     public static final String swfVersion = "20120124.01";
     public static String password = new String();
 

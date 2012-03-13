@@ -94,7 +94,7 @@ public class JsonPost {
 
 			this.header.put("client", JGroove.nameJS);
 			this.header.put("clientRevision", JGroove.versionJS);
-			JGroove.password = "everydayImBufferin";
+			JGroove.password = "spiralLightbulbs";
 		}
 		else if (method.equalsIgnoreCase("getCommunicationToken")||
 				method.equalsIgnoreCase("getResultsFromSearch")||
@@ -115,7 +115,7 @@ public class JsonPost {
 
 			this.header.put("client", JGroove.nameHTML);
 			this.header.put("clientRevision", JGroove.versionHTML);
-			JGroove.password = "evilHackersAreInOurFuture";
+			JGroove.password = "riceAndChicken";
 		}
 		System.out.println("set:"+JGroove.password);
 		if (JGroove.getCurrentSessionID().isEmpty()){

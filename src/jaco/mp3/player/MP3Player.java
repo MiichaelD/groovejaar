@@ -277,12 +277,13 @@ public class MP3Player extends JPanel {
 
 							playingSource.stop();
 							playingSource.close();
-
+							
 							playingSource = null;
 						}
 
 						try {
 							soundStream.close();
+							System.out.println("END STREAM");
 						} catch (Exception e) {
 							LOGGER.log(Level.WARNING, "error closing the sound stream", e);
 						}
@@ -302,7 +303,7 @@ public class MP3Player extends JPanel {
 					}
 
 					boolean skipForwardAllowed;
-
+					System.out.println("TEST 1");
 					synchronized (MP3Player.this) {
 
 						//
@@ -318,7 +319,7 @@ public class MP3Player extends JPanel {
 					}
 
 					playingThread = null;
-
+					System.out.println("TEst2->"+skipForwardAllowed);
 					if (skipForwardAllowed) {
 						skipForward();
 					}

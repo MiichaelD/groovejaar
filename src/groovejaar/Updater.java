@@ -24,7 +24,7 @@ public class Updater implements Callable<Boolean>{
 		updateURL = new URL(lastVersionURL);
 
 	}
-	
+
 	@Override
 	public Boolean call() throws IOException {
 
@@ -35,28 +35,36 @@ public class Updater implements Callable<Boolean>{
 		prop.load(is);
 
 		String version = prop.getProperty("version");
-		byte[] currentVersion = (normalizeVersion(version));
-		byte[] runningVersion = (normalizeVersion(GrooveJaar.version));
-		for (byte i =0;i<runningVersion.length;i++){
-			if (currentVersion[i] > runningVersion[i])
-				return true;
-		}
+		int currentVersion = (normalizeVersion(version));
+		int runningVersion = (normalizeVersion(GrooveJaar.version));
+
+		/*for (byte i =0;i<runningVersion.length;i++){*/
+		if (currentVersion > runningVersion)
+			return true;
+		/*}*/
 		return false;
 
 
 
 
 	}
-	private byte[] normalizeVersion(String version){
-		version = version.substring(0,version.indexOf(" "));
-		String[] v =version.split("\\.");
-		byte[] vb = new byte[v.length];
+	/*	private byte[] normalizeVersion(String version){
+		//version = version.substring(0,version.indexOf(" "));
+		String[] v =version.substring(0, version.indexOf("-")).split("\\.");
+		byte[] vb = new byte[v.length+1];
 
-		for (int i = 0;i<vb.length;i++){
+		for (int i = 0;i<2;i++){
 			vb[i] = Byte.parseByte(v[i]);
+			System.out.println(vb[i]);
 		}
-		return vb;
-	}
+		System.out.println(version);
+		vb[vb.length] = Byte.parseByte(version.substring(7,8));
 
+		return vb;
+	}*/
+
+	private int normalizeVersion(String version){
+		return Integer.parseInt(version.substring(0,8).replace(".", "").replace("-", ""));
+	}
 
 }
