@@ -69,6 +69,7 @@ public class MP3PlayerThemeCustom  implements MP3PlayerTheme {
 	    });
 
 	    final JSlider volumeSlider = new JSlider();
+	    
 	    volumeSlider.setToolTipText("Volume");
 	    volumeSlider.addChangeListener(new ChangeListener() {
 	      public void stateChanged(ChangeEvent e) {
@@ -77,6 +78,7 @@ public class MP3PlayerThemeCustom  implements MP3PlayerTheme {
 	    });
 	    volumeSlider.setMinimum(0);
 	    volumeSlider.setMaximum(100);
+	    volumeSlider.setValue(100);
 	    volumeSlider.setMajorTickSpacing(50);
 	    volumeSlider.setMinorTickSpacing(10);
 	    volumeSlider.setPaintTicks(true);

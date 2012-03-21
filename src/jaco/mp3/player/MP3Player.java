@@ -65,7 +65,7 @@ public class MP3Player extends JPanel {
 	private transient boolean isPaused = false;
 	private transient boolean isStopped = true;
 
-	private transient volatile int volume = 90;
+	private transient volatile int volume = 100;
 
 	private transient volatile boolean shuffle = false;
 	private transient volatile boolean repeat = true;
@@ -303,7 +303,7 @@ public class MP3Player extends JPanel {
 					}
 
 					boolean skipForwardAllowed;
-					System.out.println("TEST 1");
+					
 					synchronized (MP3Player.this) {
 
 						//
@@ -319,7 +319,7 @@ public class MP3Player extends JPanel {
 					}
 
 					playingThread = null;
-					System.out.println("TEst2->"+skipForwardAllowed);
+					
 					if (skipForwardAllowed) {
 						skipForward();
 					}

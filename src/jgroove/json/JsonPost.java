@@ -17,6 +17,8 @@
 
 package jgroove.json;
 
+import groovejaar.TokenKey;
+
 import java.util.HashMap;
 
 import java.io.IOException;
@@ -33,6 +35,9 @@ import jgroove.jsonx.JsonCountry;
  */
 @SuppressWarnings("null")
 public class JsonPost {
+
+
+
 	public final HashMap<String, Object> header = new HashMap<String, Object>();
 	{
 		header.put("country", country);
@@ -44,10 +49,10 @@ public class JsonPost {
 	static {
 		JsonCountry jcountry = new JsonCountry();
 		//try {
-			//jcountry = JGroovex.getCountry();
-			CountryUtil c = new CountryUtil();
-			c.initCountryCode();
-			jcountry = c.getCountryCode();
+		//jcountry = JGroovex.getCountry();
+		CountryUtil c = new CountryUtil();
+		c.initCountryCode();
+		jcountry = c.getCountryCode();
 		//} catch (IOException e) { //if error default country values
 		if (jcountry == null){
 			jcountry.IPR = "1201";
@@ -78,46 +83,24 @@ public class JsonPost {
 	 * @param method Method to call
 	 */
 	public JsonPost(HashMap<String, Object> parameters, String method) throws IOException{
-		
+
 		this.parameters = parameters;
 		this.method = method;
 
-		System.out.println("DEBUGGGGG:"+method);
-		
+		//System.out.println("DEBUGGGGG:"+method);
 
-		
-		 if (method.equalsIgnoreCase("getStreamKeyFromSongIDEx")  || 
-				method.equalsIgnoreCase("markSongComplete") || 
-				method.equalsIgnoreCase("markSongDownloadedEx")||
-				method.equalsIgnoreCase("markStreamKeyOver30Seconds"))
-		{
 
+
+		if (JGroove.jsMethod.contains(method)){
 			this.header.put("client", JGroove.nameJS);
-			this.header.put("clientRevision", JGroove.versionJS);
-			JGroove.password = "spiralLightbulbs";
-		}
-		else if (method.equalsIgnoreCase("getCommunicationToken")||
-				method.equalsIgnoreCase("getResultsFromSearch")||
-				method.equalsIgnoreCase("authenticateUser")|| 
-				method.equalsIgnoreCase("playlistAddSongToExisting") || 
-				method.equalsIgnoreCase("createPlaylist") ||
-				method.equalsIgnoreCase("popularGetSongs") || 
-				method.equalsIgnoreCase("playlistGetSongs") || 
-				method.equalsIgnoreCase("initiateQueue") || 
-				method.equalsIgnoreCase("userAddSongsToLibrary") || 
-				method.equalsIgnoreCase("userGetPlaylists")||
-				method.equalsIgnoreCase("userGetSongsInLibrary")||
-				method.equalsIgnoreCase("authenticateUser")||
-				method.equalsIgnoreCase("getFavorites")||
-				method.equalsIgnoreCase("favorite")||
-				method.equalsIgnoreCase("getCountry")||
-				method.equalsIgnoreCase("albumGetSongs")){
+			this.header.put("clientRevision", new TokenKey().getJsVersion());
 
-			this.header.put("client", JGroove.nameHTML);
-			this.header.put("clientRevision", JGroove.versionHTML);
-			JGroove.password = "riceAndChicken";
 		}
-		System.out.println("set:"+JGroove.password);
+		else if (JGroove.htmlMethod.contains(method)){
+			this.header.put("client", JGroove.nameHTML);
+			this.header.put("clientRevision",new TokenKey().getHtmlVersion());
+		}
+
 		if (JGroove.getCurrentSessionID().isEmpty()){
 			this.header.put("session", JGroove.getSessionID());
 		} else {

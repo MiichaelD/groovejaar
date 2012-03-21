@@ -1087,7 +1087,7 @@ public class GrooveJaar {
 	 * @throws InterruptedException 
 	 */
 	public GrooveJaar() throws FileNotFoundException, IOException, InterruptedException, ExecutionException {
-
+		
 		try {
 			//CountryUtil.initCountryCode();
 
@@ -1907,25 +1907,6 @@ public class GrooveJaar {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					openURL("http://www.emergency.it/flex/FixedPages/Common/donazioni.php/L/EN/trk/1.17");
-				} catch (IOException e) {
-
-					e.printStackTrace();
-				} catch (URISyntaxException e) {
-
-					e.printStackTrace();
-				}
-			}
-		});
-
-		JMenuItem mntmLikeMeOn = new JMenuItem(("Like me on Facebook"));
-		menu.add(mntmLikeMeOn);
-
-
-		mntmLikeMeOn.setIcon(image.getImgIcon("facebook.png"));
-		mntmLikeMeOn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					openURL("https://www.facebook.com/GrooveJaar");
 				} catch (IOException e) {
 
 					e.printStackTrace();
